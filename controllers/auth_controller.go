@@ -4,12 +4,14 @@ import (
 	"firstproject/database"
 	"firstproject/models"
 	"firstproject/utils"
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
+	"fmt"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Register creates a new user account
@@ -36,6 +38,8 @@ func Register(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not hash password"})
 	}
+	user.PasswordHash = string(hash) // <-- save to PasswordHash
+
 	user.Password = string(hash)
 	user.Email = strings.ToLower(user.Email)
 	user.VerificationToken = utils.GenerateRandomString(32)
@@ -73,13 +77,15 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
 
+	fmt.Println("Input Email:", input.Email)
+	fmt.Println("Input Password:", input.Password)
 	var user models.User
 	database.DB.Where("email = ?", strings.ToLower(input.Email)).First(&user)
 	if user.ID == 0 {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password)); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 	}
 
@@ -184,9 +190,10 @@ func ForgotPassword(c *fiber.Ctx) error {
 	// Find user by email
 	var user models.User
 	if err := database.DB.Where("email = ?", strings.ToLower(input.Email)).First(&user).Error; err != nil {
-		// Don't reveal if user doesn't exist for security
-		return c.JSON(fiber.Map{
-			"message": "If an account with that email exists, a reset link has been sent",
+		// Explicitly notify user not found
+		return c.Status(404).JSON(fiber.Map{
+			"error":   "User does not exist with this email address",
+			"success": false,
 		})
 	}
 
@@ -199,11 +206,12 @@ func ForgotPassword(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not generate reset token"})
 	}
 
-	// Send email with reset link
+	// Send email with reset link (asynchronously)
 	go utils.SendPasswordResetEmail(user.Email, resetToken)
 
 	return c.JSON(fiber.Map{
-		"message": "If an account with that email exists, a reset link has been sent",
+		"message": fmt.Sprintf("A password reset link has been sent to %s", user.Email),
+		"success": true,
 	})
 }
 
