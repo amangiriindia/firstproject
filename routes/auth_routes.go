@@ -3,31 +3,35 @@ package routes
 import (
 	"firstproject/controllers"
 	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v3"
+	"os"
 )
 
-// AuthRoutes groups all authentication routes under /auth
 func AuthRoutes(app *fiber.App) {
 	auth := app.Group("/auth")
 
-	// Basic authentication
+	// Public authentication routes
 	auth.Post("/register", controllers.Register)
 	auth.Post("/login", controllers.Login)
 	auth.Post("/refresh", controllers.RefreshToken)
 	auth.Post("/logout", controllers.Logout)
-
-	// Password reset
 	auth.Post("/forgot-password", controllers.ForgotPassword)
 	auth.Post("/reset-password", controllers.ResetPassword)
-
-	// Email verification
 	auth.Post("/verify-email", controllers.VerifyEmail)
 	auth.Post("/resend-verification", controllers.ResendVerification)
 
-	// Social auth (if implemented)
-	// auth.Get("/:provider", controllers.InitiateSocialAuth) // e.g., /auth/google
-	// auth.Get("/:provider/callback", controllers.SocialAuthCallback)
+	// Secure routes: apply the JWT middleware
+	auth.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
+		ContextKey: "user", // this key is used by your handlers (e.g., c.Locals("user"))
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Unauthorized: Invalid or missing token",
+			})
+		},
+	}))
 
-	// Profile management
+	// These routes now require a valid JWT token in the Authorization header
 	auth.Get("/me", controllers.GetCurrentUser)
 	auth.Put("/me", controllers.UpdateProfile)
 }

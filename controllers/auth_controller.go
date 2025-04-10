@@ -206,6 +206,7 @@ func ForgotPassword(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not generate reset token"})
 	}
 
+	fmt.Println(" Reset token:", resetToken)
 	// Send email with reset link (asynchronously)
 	go utils.SendPasswordResetEmail(user.Email, resetToken)
 
@@ -338,8 +339,31 @@ func GetCurrentUser(c *fiber.Ctx) error {
 
 // UpdateProfile updates the authenticated user's profile
 func UpdateProfile(c *fiber.Ctx) error {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
+
+	tokenVal := c.Locals("user")
+	if tokenVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized: Missing token",
+		})
+	}
+
+	token, ok := tokenVal.(*jwt.Token)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized: Invalid token type",
+		})
+	}
+
+	// Debug: Print the token and its claims for testing
+	fmt.Printf("DEBUG: Token: %+v\n", token)
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized: Invalid token claims",
+		})
+	}
+	fmt.Printf("DEBUG: Claims: %+v\n", claims)
+
 	userID := uint(claims["user_id"].(float64))
 
 	// Get the existing user
