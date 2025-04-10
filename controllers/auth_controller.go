@@ -2,16 +2,14 @@ package controllers
 
 import (
 	"firstproject/database"
+	"firstproject/middleware"
 	"firstproject/models"
 	"firstproject/utils"
 	"fmt"
-	"os"
+	"github.com/gofiber/fiber/v2"
+	"golang.org/x/crypto/bcrypt"
 	"strings"
 	"time"
-
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
 )
 
 // Register creates a new user account
@@ -59,7 +57,7 @@ func Register(c *fiber.Ctx) error {
 	database.DB.Create(&profile)
 
 	// Generate JWT
-	token, err := generateJWT(*user) // Pass the struct value instead of pointer
+	token, err := middleware.GenerateJWT(*user) // Pass the struct value instead of pointer
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not generate token"})
 	}
@@ -70,111 +68,42 @@ func Register(c *fiber.Ctx) error {
 	})
 }
 
-// Login authenticates a user
 func Login(c *fiber.Ctx) error {
-	input := new(models.LoginInput)
-	if err := c.BodyParser(input); err != nil {
+	reqData := new(struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	})
+
+	// Body parsing error handling
+	if err := c.BodyParser(reqData); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
 
-	fmt.Println("Input Email:", input.Email)
-	fmt.Println("Input Password:", input.Password)
+	// Log the input for debugging (optional)
+	fmt.Println("Input Email:", reqData.Email)
+	fmt.Println("Input Password:", reqData.Password)
+
+	// Find user by email
 	var user models.User
-	database.DB.Where("email = ?", strings.ToLower(input.Email)).First(&user)
-	if user.ID == 0 {
+	if err := database.DB.Where("email = ?", strings.ToLower(reqData.Email)).First(&user).Error; err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password)); err != nil {
+	// Compare password with the hashed password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(reqData.Password)); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 	}
 
-	// Generate JWT
-	token, err := generateJWT(user)
+	// Generate JWT token
+	token, err := middleware.GenerateJWT(user)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not generate token"})
 	}
 
-	// Store session
-	session := models.UserSession{
-		UserID:    user.ID,
-		Token:     token,
-		IPAddress: c.IP(),
-		UserAgent: c.Get("User-Agent"),
-		ExpiresAt: time.Now().Add(time.Hour * 72),
-	}
-	database.DB.Create(&session)
-
+	// Return success response with token and user details
 	return c.JSON(fiber.Map{
 		"token": token,
 		"user":  user,
-	})
-}
-
-// RefreshToken generates a new access token
-func RefreshToken(c *fiber.Ctx) error {
-	refreshToken := c.Get("Authorization")
-	if refreshToken == "" {
-		return c.Status(401).JSON(fiber.Map{"error": "Refresh token missing"})
-	}
-
-	// Remove "Bearer " prefix if present
-	refreshToken = strings.Replace(refreshToken, "Bearer ", "", 1)
-
-	// Parse and validate the refresh token
-	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("JWT_REFRESH_SECRET")), nil
-	})
-	if err != nil || !token.Valid {
-		return c.Status(401).JSON(fiber.Map{"error": "Invalid refresh token"})
-	}
-
-	claims := token.Claims.(jwt.MapClaims)
-	userID := uint(claims["user_id"].(float64))
-
-	// Check if refresh token exists in database
-	var session models.UserSession
-	if err := database.DB.Where("token = ? AND expires_at > ?", refreshToken, time.Now()).First(&session).Error; err != nil {
-		return c.Status(401).JSON(fiber.Map{"error": "Invalid refresh token"})
-	}
-
-	// Get user
-	var user models.User
-	if err := database.DB.First(&user, userID).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
-	}
-
-	// Generate new access token
-	newToken, err := generateJWT(user)
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Could not generate token"})
-	}
-
-	return c.JSON(fiber.Map{
-		"token": newToken,
-	})
-}
-
-// Logout invalidates the current session
-func Logout(c *fiber.Ctx) error {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	userID := uint(claims["user_id"].(float64))
-
-	// Get token from header
-	authHeader := c.Get("Authorization")
-	if authHeader == "" {
-		return c.Status(401).JSON(fiber.Map{"error": "Authorization header missing"})
-	}
-	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
-
-	// Delete the session
-	if err := database.DB.Where("user_id = ? AND token = ?", userID, tokenString).Delete(&models.UserSession{}).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Could not logout"})
-	}
-
-	return c.JSON(fiber.Map{
-		"message": "Successfully logged out",
 	})
 }
 
@@ -247,9 +176,6 @@ func ResetPassword(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not update password"})
 	}
 
-	// Invalidate all existing sessions
-	database.DB.Where("user_id = ?", user.ID).Delete(&models.UserSession{})
-
 	return c.JSON(fiber.Map{
 		"message": "Password successfully reset",
 	})
@@ -308,155 +234,11 @@ func ResendVerification(c *fiber.Ctx) error {
 			return c.Status(500).JSON(fiber.Map{"error": "Could not generate verification token"})
 		}
 	}
-
+	fmt.Print(user.VerificationToken)
 	// Send verification email
 	go utils.SendVerificationEmail(user.Email, user.VerificationToken)
 
 	return c.JSON(fiber.Map{
 		"message": "If an unverified account with that email exists, a new verification email has been sent",
 	})
-}
-
-// GetCurrentUser returns the authenticated user's profile
-func GetCurrentUser(c *fiber.Ctx) error {
-	user := c.Locals("user").(*jwt.Token)
-	claims := user.Claims.(jwt.MapClaims)
-	userID := uint(claims["user_id"].(float64))
-
-	var dbUser models.User
-	if err := database.DB.Preload("Profile").First(&dbUser, userID).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
-	}
-
-	// Don't return sensitive fields
-	dbUser.Password = ""
-	dbUser.VerificationToken = ""
-	dbUser.ResetToken = ""
-	dbUser.ResetTokenExpires = time.Time{}
-
-	return c.JSON(dbUser)
-}
-
-// UpdateProfile updates the authenticated user's profile
-func UpdateProfile(c *fiber.Ctx) error {
-
-	tokenVal := c.Locals("user")
-	if tokenVal == nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized: Missing token",
-		})
-	}
-
-	token, ok := tokenVal.(*jwt.Token)
-	if !ok {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized: Invalid token type",
-		})
-	}
-
-	// Debug: Print the token and its claims for testing
-	fmt.Printf("DEBUG: Token: %+v\n", token)
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized: Invalid token claims",
-		})
-	}
-	fmt.Printf("DEBUG: Claims: %+v\n", claims)
-
-	userID := uint(claims["user_id"].(float64))
-
-	// Get the existing user
-	var dbUser models.User
-	if err := database.DB.Preload("Profile").First(&dbUser, userID).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
-	}
-
-	// Parse input
-	var input struct {
-		FirstName   *string  `json:"first_name"`
-		LastName    *string  `json:"last_name"`
-		AvatarURL   *string  `json:"avatar_url"`
-		Bio         *string  `json:"bio"`
-		Skills      []string `json:"skills"`
-		Interests   []string `json:"interests"`
-		GithubURL   *string  `json:"github_url"`
-		LinkedinURL *string  `json:"linkedin_url"`
-		TwitterURL  *string  `json:"twitter_url"`
-		WebsiteURL  *string  `json:"website_url"`
-		Education   *string  `json:"education"`
-		Experience  *string  `json:"experience"`
-	}
-	if err := c.BodyParser(&input); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "Cannot parse JSON"})
-	}
-
-	// Update user fields if provided
-	if input.FirstName != nil {
-		dbUser.FirstName = *input.FirstName
-	}
-	if input.LastName != nil {
-		dbUser.LastName = *input.LastName
-	}
-	if input.AvatarURL != nil {
-		dbUser.AvatarURL = *input.AvatarURL
-	}
-	if input.Bio != nil {
-		dbUser.Bio = *input.Bio
-	}
-
-	// Update profile fields if provided
-	if input.Skills != nil {
-		dbUser.Profile.Skills = input.Skills
-	}
-	if input.Interests != nil {
-		dbUser.Profile.Interests = input.Interests
-	}
-	if input.GithubURL != nil {
-		dbUser.Profile.GithubURL = *input.GithubURL
-	}
-	if input.LinkedinURL != nil {
-		dbUser.Profile.LinkedinURL = *input.LinkedinURL
-	}
-	if input.TwitterURL != nil {
-		dbUser.Profile.TwitterURL = *input.TwitterURL
-	}
-	if input.WebsiteURL != nil {
-		dbUser.Profile.WebsiteURL = *input.WebsiteURL
-	}
-	if input.Education != nil {
-		dbUser.Profile.Education = *input.Education
-	}
-	if input.Experience != nil {
-		dbUser.Profile.Experience = *input.Experience
-	}
-
-	// Save changes
-	if err := database.DB.Save(&dbUser).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Could not update user"})
-	}
-	if err := database.DB.Save(&dbUser.Profile).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Could not update profile"})
-	}
-
-	// Don't return sensitive fields
-	dbUser.Password = ""
-	dbUser.VerificationToken = ""
-	dbUser.ResetToken = ""
-	dbUser.ResetTokenExpires = time.Time{}
-
-	return c.JSON(dbUser)
-}
-
-// Helper function to generate JWT
-func generateJWT(user models.User) (string, error) {
-	claims := jwt.MapClaims{
-		"user_id": user.ID,
-		"email":   user.Email,
-		"role":    user.Role,
-		"exp":     time.Now().Add(time.Hour * 72).Unix(),
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }

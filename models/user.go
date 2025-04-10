@@ -36,18 +36,3 @@ type UserProfile struct {
 	CreatedAt   time.Time `json:"-"`
 	UpdatedAt   time.Time `json:"-"`
 }
-
-type LoginInput struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
-}
-
-type UserSession struct {
-	ID        uint   `gorm:"primaryKey"`
-	UserID    uint   `gorm:"index"`
-	Token     string `gorm:"index"`
-	IPAddress string
-	UserAgent string
-	ExpiresAt time.Time
-	CreatedAt time.Time
-}
