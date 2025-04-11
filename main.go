@@ -15,5 +15,8 @@ func main() {
 
 	routes.AuthRoutes(app)
 
+	// Protected Routes
+	routes.UserRoutes(app)
+
 	app.Listen(":3000")
 }

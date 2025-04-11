@@ -25,6 +25,7 @@ func ConnectDB() {
 		panic("Failed to connect to PostgreSQL database")
 	}
 
-	db.AutoMigrate(&models.User{}) // add other models as needed
+	// Auto-migrate both User and UserProfile models.
+	db.AutoMigrate(&models.User{}, &models.UserProfile{})
 	DB = db
 }

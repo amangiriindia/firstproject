@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"github.com/lib/pq"
+	"time"
+)
 
 type User struct {
 	ID                uint        `gorm:"primaryKey" json:"id"`
@@ -23,16 +26,16 @@ type User struct {
 }
 
 type UserProfile struct {
-	ID          uint      `gorm:"primaryKey" json:"-"`
-	UserID      uint      `json:"-"`
-	Skills      []string  `gorm:"type:text[]" json:"skills"`
-	Interests   []string  `gorm:"type:text[]" json:"interests"`
-	GithubURL   string    `json:"github_url"`
-	LinkedinURL string    `json:"linkedin_url"`
-	TwitterURL  string    `json:"twitter_url"`
-	WebsiteURL  string    `json:"website_url"`
-	Education   string    `json:"education"`
-	Experience  string    `json:"experience"`
-	CreatedAt   time.Time `json:"-"`
-	UpdatedAt   time.Time `json:"-"`
+	ID          uint           `gorm:"primaryKey" json:"-"`
+	UserID      uint           `json:"-"`
+	Skills      pq.StringArray `gorm:"type:text[]" json:"skills"`
+	Interests   pq.StringArray `gorm:"type:text[]" json:"interests"`
+	GithubURL   string         `json:"github_url"`
+	LinkedinURL string         `json:"linkedin_url"`
+	TwitterURL  string         `json:"twitter_url"`
+	WebsiteURL  string         `json:"website_url"`
+	Education   string         `json:"education"`
+	Experience  string         `json:"experience"`
+	CreatedAt   time.Time      `json:"-"`
+	UpdatedAt   time.Time      `json:"-"`
 }
