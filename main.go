@@ -14,9 +14,9 @@ func main() {
 	app := fiber.New()
 
 	routes.AuthRoutes(app)
-
 	// Protected Routes
 	routes.UserRoutes(app)
+	routes.BlogRoutes(app)
 
 	app.Listen(":3000")
 }

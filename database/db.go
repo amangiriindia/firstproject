@@ -26,6 +26,7 @@ func ConnectDB() {
 	}
 
 	// Auto-migrate both User and UserProfile models.
-	db.AutoMigrate(&models.User{}, &models.UserProfile{})
+	db.AutoMigrate(&models.User{}, &models.UserProfile{}, &models.Blog{}, &models.Category{}, &models.BlogInput{})
+
 	DB = db
 }
