@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 )
 
 var DB *gorm.DB
@@ -20,13 +21,28 @@ func ConnectDB() {
 		config.GetEnv("DB_PORT"),
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	var err error
+	// Fix: Assign to the global DB variable, not a local variable
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("Failed to connect to PostgreSQL database")
+		log.Fatal("Failed to connect to PostgreSQL database:", err)
 	}
 
-	// Auto-migrate both User and UserProfile models.
-	db.AutoMigrate(&models.User{}, &models.UserProfile{}, &models.Blog{}, &models.Category{}, &models.BlogInput{})
+	log.Println("Database connected successfully!")
 
-	DB = db
+	// Auto-migrate models
+	err = DB.AutoMigrate(
+		&models.User{},
+		&models.UserProfile{},
+		&models.Blog{},
+		&models.Category{},
+		&models.Comment{},
+		// Note: Don't migrate BlogInput as it's just an input struct, not a database model
+	)
+
+	if err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
+
+	log.Println("Database migration completed successfully!")
 }
