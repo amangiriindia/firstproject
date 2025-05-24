@@ -17,6 +17,6 @@ func main() {
 	// Protected Routes
 	routes.UserRoutes(app)
 	routes.BlogRoutes(app)
-
+	routes.CourseRoutes(app)
 	app.Listen(":3000")
 }

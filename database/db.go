@@ -22,7 +22,6 @@ func ConnectDB() {
 	)
 
 	var err error
-	// Fix: Assign to the global DB variable, not a local variable
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to PostgreSQL database:", err)
@@ -37,7 +36,16 @@ func ConnectDB() {
 		&models.Blog{},
 		&models.Category{},
 		&models.Comment{},
-		// Note: Don't migrate BlogInput as it's just an input struct, not a database model
+
+		// Course platform models
+		&models.Course{},
+		&models.CourseContent{},
+		&models.Enrollment{},
+		&models.ContentProgress{},
+		&models.AssignmentSubmission{},
+		&models.Certificate{},
+		&models.Review{},
+		&models.Quiz{},
 	)
 
 	if err != nil {
