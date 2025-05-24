@@ -14,35 +14,54 @@ import (
 
 // Register creates a new user account
 func Register(c *fiber.Ctx) error {
-	user := new(models.User)
-	if err := c.BodyParser(user); err != nil {
+	// Custom input struct for registration
+	type RegisterInput struct {
+		Email     string `json:"email" validate:"required,email"`
+		Password  string `json:"password" validate:"required,min=6"`
+		Username  string `json:"username" validate:"required,min=3,max=50"`
+		FirstName string `json:"first_name"`
+		LastName  string `json:"last_name"`
+	}
+
+	var input RegisterInput
+	if err := c.BodyParser(&input); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
 
 	// Validate input
-	if user.Email == "" || user.Password == "" {
-		return c.Status(400).JSON(fiber.Map{"error": "Email and password are required"})
+	if input.Email == "" || input.Password == "" || input.Username == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Email, password, and username are required"})
 	}
 
-	// Check if user already exists
+	// Check if user already exists (email or username)
 	var existingUser models.User
-	database.DB.Where("email = ?", strings.ToLower(user.Email)).First(&existingUser)
-	if existingUser.ID != 0 {
-		return c.Status(400).JSON(fiber.Map{"error": "Email already in use"})
+	if err := database.DB.Where("email = ? OR username = ?",
+		strings.ToLower(input.Email),
+		strings.ToLower(input.Username)).First(&existingUser).Error; err == nil {
+		if existingUser.Email == strings.ToLower(input.Email) {
+			return c.Status(400).JSON(fiber.Map{"error": "Email already in use"})
+		}
+		if existingUser.Username == strings.ToLower(input.Username) {
+			return c.Status(400).JSON(fiber.Map{"error": "Username already in use"})
+		}
 	}
 
 	// Hash password
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	hash, err := bcrypt.GenerateFromPassword([]byte(input.Password), 14)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not hash password"})
 	}
-	user.PasswordHash = string(hash) // <-- save to PasswordHash
-
-	user.Password = string(hash)
-	user.Email = strings.ToLower(user.Email)
-	user.VerificationToken = utils.GenerateRandomString(32)
 
 	// Create user
+	user := models.User{
+		Username:          strings.ToLower(input.Username),
+		Email:             strings.ToLower(input.Email),
+		PasswordHash:      string(hash),
+		FirstName:         input.FirstName,
+		LastName:          input.LastName,
+		VerificationToken: utils.GenerateRandomString(32),
+	}
+
 	if err := database.DB.Create(&user).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not create user"})
 	}
@@ -57,7 +76,7 @@ func Register(c *fiber.Ctx) error {
 	database.DB.Create(&profile)
 
 	// Generate JWT
-	token, err := middleware.GenerateJWT(*user) // Pass the struct value instead of pointer
+	token, err := middleware.GenerateJWT(user)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not generate token"})
 	}

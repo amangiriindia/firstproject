@@ -316,10 +316,14 @@ func EnrollCourse(c *fiber.Ctx) error {
 		})
 	}
 
+	// Load the enrollment with preloaded relationships
+	var enrollmentWithData models.Enrollment
+	database.DB.Preload("User").Preload("Course.Author").First(&enrollmentWithData, enrollment.ID)
+
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"status":  true,
 		"message": "Enrolled in course successfully",
-		"data":    enrollment,
+		"data":    enrollmentWithData,
 	})
 }
 
