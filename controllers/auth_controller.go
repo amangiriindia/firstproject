@@ -21,6 +21,7 @@ func Register(c *fiber.Ctx) error {
 		Username  string `json:"username" validate:"required,min=3,max=50"`
 		FirstName string `json:"first_name"`
 		LastName  string `json:"last_name"`
+		Role      string `json:"role" validate:"required,oneof=user instructor admin super_admin"`
 	}
 
 	var input RegisterInput
@@ -31,6 +32,22 @@ func Register(c *fiber.Ctx) error {
 	// Validate input
 	if input.Email == "" || input.Password == "" || input.Username == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "Email, password, and username are required"})
+	}
+
+	// Validate role
+	validRoles := map[string]bool{
+		"user":        true,
+		"instructor":  true,
+		"admin":       true,
+		"super_admin": true,
+	}
+
+	if input.Role == "" {
+		input.Role = "user" // Default role
+	} else if !validRoles[strings.ToLower(input.Role)] {
+		return c.Status(400).JSON(fiber.Map{
+			"error": "Invalid role. Valid roles are: user, instructor, admin, super_admin",
+		})
 	}
 
 	// Check if user already exists (email or username)
@@ -59,6 +76,7 @@ func Register(c *fiber.Ctx) error {
 		PasswordHash:      string(hash),
 		FirstName:         input.FirstName,
 		LastName:          input.LastName,
+		Role:              strings.ToLower(input.Role),
 		VerificationToken: utils.GenerateRandomString(32),
 	}
 
@@ -87,6 +105,7 @@ func Register(c *fiber.Ctx) error {
 	})
 }
 
+// Rest of your controller functions remain the same...
 func Login(c *fiber.Ctx) error {
 	reqData := new(struct {
 		Email    string `json:"email"`

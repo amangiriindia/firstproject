@@ -9,13 +9,14 @@ type User struct {
 	ID                uint        `gorm:"primaryKey" json:"id"`
 	Username          string      `gorm:"unique;not null" json:"username"`
 	Email             string      `gorm:"unique;not null" json:"email"`
+	Mobile            string      `gorm:"unique;not null" json:"mobile"`
 	Password          string      `gorm:"-" json:"password,omitempty"`
 	PasswordHash      string      `gorm:"not null" json:"-"`
 	FirstName         string      `json:"first_name"`
 	LastName          string      `json:"last_name"`
 	AvatarURL         string      `json:"avatar_url"`
 	Bio               string      `json:"bio"`
-	Role              string      `gorm:"default:student" json:"role"`
+	Role              string      `gorm:"default:user" json:"role"`
 	IsVerified        bool        `gorm:"default:false" json:"is_verified"`
 	VerificationToken string      `json:"-"`
 	ResetToken        string      `json:"-"`
