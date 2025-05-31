@@ -1,0 +1,2117 @@
+{
+	"info": {
+		"_postman_id": "39b9c3de-4427-4e3c-9b18-dd553f7e3550",
+		"name": "go first project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39805274"
+	},
+	"item": [
+		{
+			"name": "blog",
+			"item": [
+				{
+					"name": "blogs",
+					"item": [
+						{
+							"name": "Get All Blogs (Public)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blogs with Search Parameters",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs?q=technology&category_id=1&status=published&sort_by=view_count&order=desc&page=1&limit=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "technology"
+										},
+										{
+											"key": "category_id",
+											"value": "1"
+										},
+										{
+											"key": "status",
+											"value": "published"
+										},
+										{
+											"key": "sort_by",
+											"value": "view_count"
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search Blogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/search?q=innovation&author_id=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "innovation"
+										},
+										{
+											"key": "author_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Blog (Protected)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"The Future of Artificial Intelligence in 2024\",\n    \"content\": \"Artificial Intelligence has been rapidly evolving, and 2024 promises to be a groundbreaking year for AI technology. From advanced machine learning models to practical applications in everyday life, AI is reshaping how we work, communicate, and solve complex problems. This comprehensive guide explores the latest trends, innovations, and what to expect in the AI landscape this year.\",\n    \"category_id\": 10,\n    \"image_url\": \"https://example.com/images/ai-future.jpg\",\n    \"keywords\": \"artificial intelligence, AI, machine learning, technology, 2024, innovation, automation\",\n    \"status\": \"published\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/blogs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blog by ID (Public)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blogs by Category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/categories/1/blogs?page=1&limit=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"categories",
+										"1",
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Draft Blog",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Travel Guide: Hidden Gems in Southeast Asia\",\n    \"content\": \"Southeast Asia is full of incredible destinations that many travelers overlook. From secluded beaches in Philippines to ancient temples in Cambodia, this region offers unforgettable experiences for adventurous souls. Join us as we explore some of the most beautiful and lesser-known places that should be on every traveler's bucket list.\",\n    \"category_id\": 10,\n    \"image_url\": \"https://example.com/images/southeast-asia.jpg\",\n    \"keywords\": \"travel, southeast asia, hidden gems, adventure, temples, beaches, backpacking\",\n    \"status\": \"draft\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/blogs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Blog (Protected)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"The Revolutionary Impact of AI in 2024: A Deep Dive\",\n    \"content\": \"Artificial Intelligence continues to revolutionize industries and reshape our daily lives. In 2024, we're witnessing unprecedented advancements in AI technology, from generative AI models to autonomous systems. This updated analysis explores the latest developments, practical applications, and future implications of AI technology across various sectors including healthcare, finance, education, and entertainment.\",\n    \"category_id\": 10,\n    \"image_url\": \"https://example.com/images/ai-revolution-2024.jpg\",\n    \"keywords\": \"artificial intelligence, AI revolution, 2024 trends, machine learning, automation, generative AI, technology impact\",\n    \"status\": \"published\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/blogs/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Blog (Protected)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/blogs/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "comments",
+					"item": [
+						{
+							"name": "Get Blog Comments (Public)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/3/comments?page=1&limit=20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"3",
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Comment (Protected)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer YOUR_JWT_TOKEN"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"This is a fascinating article about AI! I particularly enjoyed the section about machine learning applications. Thank you for sharing these insights.\",\n    \"blog_id\": 1\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/comments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Reply to Comment (Protected)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"I completely agree! The AI developments this year have been incredible. What do you think will be the next big breakthrough?\",\n    \"blog_id\": 1,\n    \"parent_id\": 1\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/comments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Comment (Protected)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"This is an absolutely fascinating article about AI! I particularly enjoyed the detailed section about machine learning applications and their real-world impact. Thank you for sharing these valuable insights with the community.\",\n    \"blog_id\": 1\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/comments/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"comments",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Comment (Protected)",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Enhanced Features",
+					"item": [
+						{
+							"name": "Get Popular Blogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/popular?limit=10&days=30",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"popular"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "days",
+											"value": "30"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Recent Blogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/recent?limit=15",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"recent"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "15"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Featured Blogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/featured?limit=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"featured"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Related Blogs",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blogs by Author",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/authors/1/blogs?page=1&limit=10&status=published",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"authors",
+										"1",
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "status",
+											"value": "published"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Blogs by Author (Including Drafts)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/authors/1/blogs?page=1&limit=10&status=all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"authors",
+										"1",
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "status",
+											"value": "all"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Advanced Search",
+					"item": [
+						{
+							"name": "Search by Multiple Parameters",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs?q=AI%20technology&category_id=1&sort_by=view_count&order=desc&page=1&limit=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "AI%20technology"
+										},
+										{
+											"key": "category_id",
+											"value": "1"
+										},
+										{
+											"key": "sort_by",
+											"value": "view_count"
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search by Keywords",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs/search?q=machine%20learning&sort_by=created_at&order=desc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs",
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "machine%20learning"
+										},
+										{
+											"key": "sort_by",
+											"value": "created_at"
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filter by Author and Status",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/blogs?author_id=1&status=published&sort_by=updated_at&order=asc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"blogs"
+									],
+									"query": [
+										{
+											"key": "author_id",
+											"value": "1"
+										},
+										{
+											"key": "status",
+											"value": "published"
+										},
+										{
+											"key": "sort_by",
+											"value": "updated_at"
+										},
+										{
+											"key": "order",
+											"value": "asc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Dashboard Stats",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/dashboard/stats",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dashboard",
+										"stats"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blog Stats",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/dashboard/blogs/1/stats",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dashboard",
+										"blogs",
+										"1",
+										"stats"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Toggle Blog Status",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNjA1ODQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.kIlgC-nkzgAeG3FDVEDKMvKbGUbX-Rdiz58S-N9kkEA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/dashboard/blogs/1/toggle-status",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"dashboard",
+										"blogs",
+										"1",
+										"toggle-status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Get Categories Including Inactive",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/categories?include_inactive=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"categories"
+									],
+									"query": [
+										{
+											"key": "include_inactive",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Category",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNTk5MzksInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.Up_ppEO_RX6wsgsfdoWWKlSyBrjdEuYn38d9WOTVs-Y"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Technology\",\n    \"description\": \"All about latest technology trends and innovations\",\n    \"color\": \"#007bff\",\n    \"is_active\": true\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNTk5MzksInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.Up_ppEO_RX6wsgsfdoWWKlSyBrjdEuYn38d9WOTVs-Y"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Tech & Innovation\",\n    \"description\": \"Technology, innovation, and digital transformation\",\n    \"color\": \"#0056b3\",\n    \"is_active\": true\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/categories/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Category",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyNTk5MzksInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.Up_ppEO_RX6wsgsfdoWWKlSyBrjdEuYn38d9WOTVs-Y"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/categories/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get blog by category",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"amangiri381@gmail.com\",\n    \"password\": \"password123\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"prakash@example.com\",\n    \"password\": \"mypassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"amangiri381@gmail.com\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/forgot-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"a-_BEO2YPWKjfLjIURZ6ZwsQ7yNpsoml\",\n    \"password\": \"newpassword123\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/reset-password",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resend-email-verification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"amangiri0381@gmail.com\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/resend-verification",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"resend-verification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"token\": \"vweNGjeJrpc18ASko6DiDbttnuA3G8uA\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/verify-email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDQ1NDU2MDQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.rC9X9gpEA8oA6NBkWn6Dec5ws2rsfN6tUGpLMTsh8eM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/user/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDQ1NDU2MDQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.rC9X9gpEA8oA6NBkWn6Dec5ws2rsfN6tUGpLMTsh8eM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDQ1NDU2MDQsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.rC9X9gpEA8oA6NBkWn6Dec5ws2rsfN6tUGpLMTsh8eM",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Aman\",\n    \"last_name\": \"Giri\",\n    \"avatar_url\": \"http://example.com/new-avatar.jpg\",\n    \"bio\": \"Updated bio\",\n    \"skills\": [\"golang\", \"fiber\"],\n    \"interests\": [\"coding\", \"reading\"],\n    \"github_url\": \"https://github.com/johndoe\",\n    \"linkedin_url\": \"https://linkedin.com/in/johndoe\",\n    \"twitter_url\": \"https://twitter.com/johndoe\",\n    \"website_url\": \"https://johndoe.com\",\n    \"education\": \"BS Computer Science\",\n    \"experience\": \"5 years\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/user/profile",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Course Content Management",
+					"item": [
+						{
+							"name": "video upload",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Introduction to Variables\",\n    \"type\": \"video\",\n    \"data\": {\n      \"video_url\": \"https://example.com/video.mp4\",\n      \"duration\": 300,\n      \"thumbnail\": \"https://example.com/thumb.jpg\"\n    },\n    \"duration\": 300,\n    \"order\": 1,\n    \"is_preview\": true\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "mcq",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"JavaScript Variables Quiz\",\n    \"type\": \"mcq\",\n    \"data\": {\n      \"question\": \"What is the correct way to declare a variable in JavaScript?\",\n      \"options\": [\"var x;\", \"variable x;\", \"declare x;\", \"x = variable;\"],\n      \"correct_answer\": 0,\n      \"explanation\": \"var is the traditional way to declare variables in JavaScript\"\n    },\n    \"duration\": 120,\n    \"order\": 2,\n    \"is_preview\": false\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Text",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Course Overview\",\n    \"type\": \"text\",\n    \"data\": {\n      \"content\": \"This is a comprehensive course on JavaScript programming...\",\n      \"images\": [\"https://example.com/diagram1.jpg\"]\n    },\n    \"duration\": 60,\n    \"order\": 3,\n    \"is_preview\": false\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PDF",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"JavaScript Reference Guide\",\n    \"type\": \"pdf\",\n    \"data\": {\n      \"pdf_url\": \"https://example.com/reference.pdf\",\n      \"pages\": 25\n    },\n    \"duration\": 0,\n    \"order\": 4,\n    \"is_preview\": false\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update content",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Updated Lesson Title\",\n  \"type\": \"video\",\n  \"data\": {\"url\": \"https://new-video-url.com\"},\n  \"order\": 2,\n  \"is_preview\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Content",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/content/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"content",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Course Content (for management)",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Student Enrollment & Progress",
+					"item": [
+						{
+							"name": "Enroll in Course",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/enroll",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"enroll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Get certificates",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/certificates",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"certificates"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Enrolled Courses",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Specific Enrolled Course",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Content with Progress",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMzgxQGdtYWlsLmNvbSIsImV4cCI6MTc0ODMyNDYwMSwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjoxMX0._SZ8794zRnHUvup5x430GBJqHvSdj6GQu5vF_dctdfA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses/2/progress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses",
+										"2",
+										"progress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Content Progress",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMzgxQGdtYWlsLmNvbSIsImV4cCI6MTc0ODMyNDYwMSwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjoxMX0._SZ8794zRnHUvup5x430GBJqHvSdj6GQu5vF_dctdfA"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"content_id\": 456,\n  \"is_completed\": true,\n  \"time_spent\": 300,\n  \"last_position\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses/123/contents/456/progress",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses",
+										"123",
+										"contents",
+										"456",
+										"progress"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Next Content",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMzgxQGdtYWlsLmNvbSIsImV4cCI6MTc0ODMyNDYwMSwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjoxMX0._SZ8794zRnHUvup5x430GBJqHvSdj6GQu5vF_dctdfA"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses/2/next-content",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses",
+										"2",
+										"next-content"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Resume Position",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get Certificate Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMzgxQGdtYWlsLmNvbSIsImV4cCI6MTc0ODMzNjczMSwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjoxMX0.4f35fPSByAaH24a1jEd11WTSGgwvUOOnuDyMabMPY78"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/certificates/CERT-ABC123",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"certificates",
+										"CERT-ABC123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mark content as completed:",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Course-complete",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMzgxQGdtYWlsLmNvbSIsImV4cCI6MTc0ODMzNjczMSwicm9sZSI6InN0dWRlbnQiLCJ1c2VyX2lkIjoxMX0.4f35fPSByAaH24a1jEd11WTSGgwvUOOnuDyMabMPY78"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/enrolled-courses/2/complete",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"enrolled-courses",
+										"2",
+										"complete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reviews and Ratings",
+					"item": [
+						{
+							"name": "Course Review",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rating\": 5,\n    \"comment\": \"Excellent course! Very well structured and easy to follow.\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/2/reviews",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"2",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Course Reviews",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/courses/123/reviews",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"123",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Course",
+					"item": [
+						{
+							"name": "Get All Courses (Public)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Courses By filtter",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/courses?category=programming&level=beginner&page=1&limit=10&sort=created_at&order=desc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "programming"
+										},
+										{
+											"key": "level",
+											"value": "beginner"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sort",
+											"value": "created_at"
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/courses?search=javascript&min_price=0&max_price=100",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "javascript"
+										},
+										{
+											"key": "min_price",
+											"value": "0"
+										},
+										{
+											"key": "max_price",
+											"value": "100"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Course",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Complete JavaScript Course\",\n    \"description\": \"Learn JavaScript from basics to advanced concepts\",\n    \"featured_image\": \"https://example.com/image.jpg\",\n    \"price\": 99.99,\n    \"currency\": \"USD\",\n    \"level\": \"beginner\",\n    \"duration\": 480,\n    \"language\": \"English\",\n    \"category\": \"Programming\",\n    \"tags\": [\"javascript\", \"web development\", \"programming\"]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Single Course",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/courses/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Course",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Updated JavaScript Course\",\n    \"description\": \"Updated description for the course\",\n    \"featured_image\": \"https://example.com/updated-image.jpg\",\n    \"price\": 129.99,\n    \"currency\": \"USD\",\n    \"level\": \"intermediate\",\n    \"duration\": 600,\n    \"language\": \"English\",\n    \"category\": \"Programming\",\n    \"tags\": [\"javascript\", \"web development\", \"advanced\"]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/courses/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Course",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/courses/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"courses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Publish Course (Author Only)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5naXJpMDM4MUBnbWFpbC5jb20iLCJleHAiOjE3NDgyODIwNDIsInJvbGUiOiJzdHVkZW50IiwidXNlcl9pZCI6NX0.5sZkr3j7wgFT4Woy--aL1t4GE9Zt71n3_UVrAsHDEqQ"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/courses/2/publish",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"courses",
+								"2",
+								"publish"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": " http://127.0.0.1:3000  ",
+			"type": "default"
+		}
+	]
+}
